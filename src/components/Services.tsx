@@ -1,6 +1,6 @@
 
 import { motion } from 'framer-motion';
-import { Code, Smartphone, Globe, Database, Zap, Users } from 'lucide-react';
+import { Code, Smartphone, Globe, Database, Zap, Users, ShoppingCart, FileText, Rocket, Building, Wrench } from 'lucide-react';
 
 const Services = () => {
   const services = [
@@ -45,6 +45,48 @@ const Services = () => {
       title: "Technical Consulting",
       description: "Providing technical guidance and code reviews for development teams.",
       features: ["Code Review", "Architecture Planning", "Team Mentoring", "Best Practices"]
+    },
+    {
+      id: 7,
+      icon: Code,
+      title: "Portfolio Websites",
+      description: "Beautiful, interactive, and modern portfolios to showcase your personal brand or creative work.",
+      features: ["Personal Branding", "Interactive Design", "Modern Layouts", "Responsive Design"]
+    },
+    {
+      id: 8,
+      icon: ShoppingCart,
+      title: "E-commerce Sites",
+      description: "Fully functional online stores with secure payments, product catalogs, and user-friendly checkout flows.",
+      features: ["Payment Integration", "Product Catalogs", "Secure Checkout", "Inventory Management"]
+    },
+    {
+      id: 9,
+      icon: FileText,
+      title: "CMS Websites",
+      description: "Custom content management systems for easy updates, blogging, or team collaboration with admin dashboards.",
+      features: ["Content Management", "Admin Dashboards", "User Roles", "Blog Systems"]
+    },
+    {
+      id: 10,
+      icon: Rocket,
+      title: "Landing Pages",
+      description: "High-converting landing pages tailored for product launches, promotions, and lead generation.",
+      features: ["Lead Generation", "Conversion Optimization", "A/B Testing", "Analytics Integration"]
+    },
+    {
+      id: 11,
+      icon: Building,
+      title: "Business Websites",
+      description: "Professional and scalable websites for businesses to showcase services, clients, and contact info effectively.",
+      features: ["Professional Design", "Service Showcase", "Client Testimonials", "Contact Forms"]
+    },
+    {
+      id: 12,
+      icon: Wrench,
+      title: "Custom Web Applications",
+      description: "Tailor-made full-stack apps with features like authentication, data dashboards, and automation tools.",
+      features: ["User Authentication", "Data Dashboards", "Automation Tools", "Custom Features"]
     }
   ];
 
@@ -61,7 +103,10 @@ const Services = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             My <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Services</span>
           </h2>
-          <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-400 max-w-3xl mx-auto mb-8">
+            I specialize in building all types of websites to meet your personal and business goals.
+          </p>
+          <p className="text-lg text-slate-400 max-w-3xl mx-auto">
             Comprehensive web development services to help bring your ideas to life with modern technologies and best practices.
           </p>
         </motion.div>
