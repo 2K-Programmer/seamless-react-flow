@@ -5,7 +5,10 @@ import 'aos/dist/aos.css';
 import Navigation from './Navigation';
 import Hero from './Hero';
 import About from './About';
+import Experience from './Experience';
+import Services from './Services';
 import Projects from './Projects';
+import Certifications from './Certifications';
 import Contact from './Contact';
 import Footer from './Footer';
 
@@ -24,7 +27,10 @@ const Portfolio = () => {
       <Navigation />
       <Hero />
       <About />
+      <Experience />
+      <Services />
       <Projects />
+      <Certifications />
       <Contact />
       <Footer />
     </div>

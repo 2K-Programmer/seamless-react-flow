@@ -10,7 +10,10 @@ const Navigation = () => {
   const navItems = [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
+    { name: 'Experience', href: '#experience' },
+    { name: 'Services', href: '#services' },
     { name: 'Projects', href: '#projects' },
+    { name: 'Certifications', href: '#certifications' },
     { name: 'Contact', href: '#contact' }
   ];
 
@@ -50,7 +53,7 @@ const Navigation = () => {
           </motion.div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden lg:flex space-x-8">
             {navItems.map((item, index) => (
               <motion.button
                 key={item.name}
@@ -67,7 +70,7 @@ const Navigation = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-slate-300 hover:text-white transition-colors"
@@ -85,7 +88,7 @@ const Navigation = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-slate-900/95 backdrop-blur-md border-t border-slate-800"
+            className="lg:hidden bg-slate-900/95 backdrop-blur-md border-t border-slate-800"
           >
             <div className="px-4 py-6 space-y-4">
               {navItems.map((item) => (
