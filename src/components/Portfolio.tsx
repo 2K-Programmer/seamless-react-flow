@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Navigation from './Navigation';
@@ -11,8 +11,12 @@ import Projects from './Projects';
 import Certifications from './Certifications';
 import Contact from './Contact';
 import Footer from './Footer';
+import AdminPanel from './AdminPanel';
+import AdminButton from './AdminButton';
 
 const Portfolio = () => {
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -33,6 +37,15 @@ const Portfolio = () => {
       <Certifications />
       <Contact />
       <Footer />
+      
+      {/* Admin Panel */}
+      <AdminPanel 
+        isOpen={isAdminOpen} 
+        onClose={() => setIsAdminOpen(false)} 
+      />
+      
+      {/* Floating Admin Button */}
+      <AdminButton onClick={() => setIsAdminOpen(true)} />
     </div>
   );
 };
