@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Settings, User, Briefcase, Award, Code, Palette, FileText, Star, Mail } from 'lucide-react';
+import { useEditable } from '../contexts/EditableContext';
 
 interface AdminPanelProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface AdminPanelProps {
 
 const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
   const [activeTab, setActiveTab] = useState('general');
+  const { heroData, updateHeroData } = useEditable();
 
   const tabs = [
     { id: 'general', label: 'General Info', icon: User },
@@ -27,31 +29,76 @@ const AdminPanel = ({ isOpen, onClose }: AdminPanelProps) => {
       case 'general':
         return (
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-white mb-4">General Information</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">Hero Section - General Information</h3>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-400 mb-2">Full Name</label>
                 <input
                   type="text"
-                  defaultValue="John Doe"
+                  value={heroData.fullName}
+                  onChange={(e) => updateHeroData({ fullName: e.target.value })}
                   className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-500"
+                  placeholder="Enter your full name"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-400 mb-2">Job Title</label>
                 <input
                   type="text"
-                  defaultValue="Full Stack Developer"
+                  value={heroData.jobTitle}
+                  onChange={(e) => updateHeroData({ jobTitle: e.target.value })}
                   className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-500"
+                  placeholder="e.g., Full Stack Developer"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-400 mb-2">Headline</label>
                 <textarea
                   rows={3}
-                  defaultValue="Passionate about creating exceptional digital experiences with modern technologies."
+                  value={heroData.headline}
+                  onChange={(e) => updateHeroData({ headline: e.target.value })}
                   className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-500 resize-none"
+                  placeholder="A brief description about yourself and what you do"
                 />
+              </div>
+              <div className="space-y-3">
+                <h4 className="text-md font-medium text-white">Social Links</h4>
+                <div>
+                  <label className="block text-sm font-medium text-slate-400 mb-2">GitHub URL</label>
+                  <input
+                    type="url"
+                    value={heroData.socialLinks.github}
+                    onChange={(e) => updateHeroData({ 
+                      socialLinks: { ...heroData.socialLinks, github: e.target.value }
+                    })}
+                    className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-500"
+                    placeholder="https://github.com/yourusername"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-400 mb-2">LinkedIn URL</label>
+                  <input
+                    type="url"
+                    value={heroData.socialLinks.linkedin}
+                    onChange={(e) => updateHeroData({ 
+                      socialLinks: { ...heroData.socialLinks, linkedin: e.target.value }
+                    })}
+                    className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-500"
+                    placeholder="https://linkedin.com/in/yourusername"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-400 mb-2">Email (or contact section link)</label>
+                  <input
+                    type="text"
+                    value={heroData.socialLinks.email}
+                    onChange={(e) => updateHeroData({ 
+                      socialLinks: { ...heroData.socialLinks, email: e.target.value }
+                    })}
+                    className="w-full px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-500"
+                    placeholder="mailto:your@email.com or #contact"
+                  />
+                </div>
               </div>
             </div>
           </div>

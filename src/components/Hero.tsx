@@ -2,8 +2,11 @@
 import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
 import { Github, Linkedin, Mail, Download, ArrowDown } from 'lucide-react';
+import { useEditable } from '../contexts/EditableContext';
 
 const Hero = () => {
+  const { heroData } = useEditable();
+  
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
@@ -38,7 +41,7 @@ const Hero = () => {
           >
             Hi, I'm{' '}
             <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              John Doe
+              {heroData.fullName}
             </span>
           </motion.h1>
 
@@ -50,7 +53,7 @@ const Hero = () => {
           >
             <TypeAnimation
               sequence={[
-                'Full Stack Developer',
+                heroData.jobTitle,
                 2000,
                 'React Specialist',
                 2000,
@@ -71,8 +74,7 @@ const Hero = () => {
             transition={{ delay: 0.6, duration: 0.8 }}
             className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed"
           >
-            Passionate about creating exceptional digital experiences with modern technologies.
-            I build scalable, performant applications that solve real-world problems.
+            {heroData.headline}
           </motion.p>
 
           <motion.div
@@ -100,9 +102,9 @@ const Hero = () => {
             className="flex justify-center space-x-6"
           >
             {[
-              { icon: Github, href: '#' },
-              { icon: Linkedin, href: '#' },
-              { icon: Mail, href: '#contact' }
+              { icon: Github, href: heroData.socialLinks.github },
+              { icon: Linkedin, href: heroData.socialLinks.linkedin },
+              { icon: Mail, href: heroData.socialLinks.email }
             ].map((social, index) => (
               <motion.a
                 key={index}
