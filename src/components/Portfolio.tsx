@@ -11,12 +11,8 @@ import Projects from './Projects';
 import Certifications from './Certifications';
 import Contact from './Contact';
 import Footer from './Footer';
-import AdminPanel from './AdminPanel';
-import AdminButton from './AdminButton';
-import { EditableProvider } from '../contexts/EditableContext';
 
 const Portfolio = () => {
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
 
   useEffect(() => {
     AOS.init({
@@ -28,28 +24,17 @@ const Portfolio = () => {
   }, []);
 
   return (
-    <EditableProvider>
-      <div className="min-h-screen bg-slate-900 text-white overflow-x-hidden">
-        <Navigation />
-        <Hero />
-        <About />
-        <Experience />
-        <Services />
-        <Projects />
-        <Certifications />
-        <Contact />
-        <Footer />
-        
-        {/* Admin Panel */}
-        <AdminPanel 
-          isOpen={isAdminOpen} 
-          onClose={() => setIsAdminOpen(false)} 
-        />
-        
-        {/* Floating Admin Button */}
-        <AdminButton onClick={() => setIsAdminOpen(true)} />
-      </div>
-    </EditableProvider>
+    <div className="min-h-screen bg-slate-900 text-white overflow-x-hidden">
+      <Navigation />
+      <Hero />
+      <About />
+      <Experience />
+      <Services />
+      <Projects />
+      <Certifications />
+      <Contact />
+      <Footer />
+    </div>
   );
 };
 
