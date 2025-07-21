@@ -1,20 +1,35 @@
 
 import { motion } from 'framer-motion';
-import { Code, Rocket, Star, Users } from 'lucide-react';
+import { Code, Rocket, Star, Users, Database, Globe, FileCode2, Layers, Flame, Terminal, Github, Settings } from 'lucide-react';
 
 const About = () => {
   const skillCategories = [
     {
       title: "Frontend",
-      skills: ["HTML", "CSS", "JavaScript", "React Js", "Bootstrap"]
+      skills: [
+        { name: "HTML", icon: FileCode2, color: "text-orange-400" },
+        { name: "CSS", icon: Layers, color: "text-blue-400" },
+        { name: "JavaScript", icon: Code, color: "text-yellow-400" },
+        { name: "React Js", icon: Globe, color: "text-cyan-400" },
+        { name: "Bootstrap", icon: Layers, color: "text-purple-400" }
+      ]
     },
     {
       title: "Backend", 
-      skills: ["Python", "MongoDB", "Firebase"]
+      skills: [
+        { name: "Python", icon: Code, color: "text-blue-400" },
+        { name: "MongoDB", icon: Database, color: "text-green-400" },
+        { name: "Firebase", icon: Flame, color: "text-orange-400" }
+      ]
     },
     {
       title: "Others",
-      skills: ["Git", "GitHub", "Netlify", "VS Code"]
+      skills: [
+        { name: "Git", icon: Terminal, color: "text-red-400" },
+        { name: "GitHub", icon: Github, color: "text-gray-400" },
+        { name: "Netlify", icon: Globe, color: "text-teal-400" },
+        { name: "VS Code", icon: Settings, color: "text-blue-400" }
+      ]
     }
   ];
 
@@ -81,36 +96,71 @@ const About = () => {
 
         <motion.div
           data-aos="fade-up"
-          className="space-y-8"
+          className="space-y-12"
         >
+          {/* Header Section */}
           <div className="text-center">
-            <h3 className="text-3xl font-semibold text-white mb-4">Skills</h3>
-            <p className="text-slate-400 mb-12">Here are some of my skills on which I have been working on for the past 2 years.</p>
+            <motion.h3 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="text-4xl md:text-5xl font-bold text-white mb-6"
+            >
+              Skills
+            </motion.h3>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="text-lg text-slate-400 max-w-2xl mx-auto"
+            >
+              Here are some of my skills on which I have been working on for the past 2 years.
+            </motion.p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-6">
+          {/* Skills Grid */}
+          <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-8">
             {skillCategories.map((category, categoryIndex) => (
               <motion.div
                 key={category.title}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: categoryIndex * 0.2 }}
+                transition={{ delay: categoryIndex * 0.2, duration: 0.6 }}
                 viewport={{ once: true }}
-                className="bg-slate-800/30 rounded-2xl p-6 backdrop-blur-sm border border-slate-700/50"
+                className="bg-slate-800/40 backdrop-blur-sm rounded-2xl p-8 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300"
               >
-                <h4 className="text-xl font-semibold text-blue-400 mb-6 text-center">{category.title}</h4>
-                <div className="space-y-3">
+                <motion.h4 
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: (categoryIndex * 0.2) + 0.3 }}
+                  viewport={{ once: true }}
+                  className="text-2xl font-semibold text-white mb-8 text-center"
+                >
+                  {category.title}
+                </motion.h4>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {category.skills.map((skill, skillIndex) => (
                     <motion.div
-                      key={skill}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: (categoryIndex * 0.2) + (skillIndex * 0.1) }}
+                      key={skill.name}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ 
+                        delay: (categoryIndex * 0.2) + (skillIndex * 0.1) + 0.4,
+                        duration: 0.4 
+                      }}
                       viewport={{ once: true }}
-                      whileHover={{ scale: 1.02 }}
-                      className="px-4 py-3 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg text-blue-300 text-sm font-medium backdrop-blur-sm text-center hover:border-blue-500/40 transition-all duration-300"
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      className="flex items-center gap-3 p-4 bg-slate-900/50 rounded-xl border border-slate-600/30 hover:border-slate-500/50 transition-all duration-300 group cursor-pointer"
                     >
-                      {skill}
+                      <div className={`p-2 rounded-lg bg-slate-800/50 group-hover:bg-slate-700/50 transition-colors duration-300`}>
+                        <skill.icon className={`w-5 h-5 ${skill.color}`} />
+                      </div>
+                      <span className="text-slate-300 font-medium group-hover:text-white transition-colors duration-300">
+                        {skill.name}
+                      </span>
                     </motion.div>
                   ))}
                 </div>
