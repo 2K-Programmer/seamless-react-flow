@@ -2,10 +2,18 @@
 import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
 import { Github, Linkedin, Mail, Download, ArrowDown } from 'lucide-react';
-import { useEditable } from '../contexts/EditableContext';
-
 const Hero = () => {
-  const { heroData } = useEditable();
+  // Static hero data since admin panel was removed
+  const heroData = {
+    fullName: "Your Name",
+    jobTitle: "Full Stack Developer",
+    headline: "I create beautiful and functional web applications that deliver exceptional user experiences.",
+    socialLinks: {
+      github: "https://github.com/yourusername",
+      linkedin: "https://linkedin.com/in/yourusername", 
+      email: "#contact"
+    }
+  };
   
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
