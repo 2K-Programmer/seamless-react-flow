@@ -81,12 +81,14 @@ const About = () => {
 
         <motion.div
           data-aos="fade-up"
-          className="bg-slate-800/30 rounded-2xl p-8 backdrop-blur-sm border border-slate-700/50"
+          className="space-y-8"
         >
-          <h3 className="text-2xl font-semibold text-white mb-6 text-center">Skills</h3>
-          <p className="text-slate-400 text-center mb-8">Here are some of my skills on which I have been working on for the past 2 years.</p>
+          <div className="text-center">
+            <h3 className="text-3xl font-semibold text-white mb-4">Skills</h3>
+            <p className="text-slate-400 mb-12">Here are some of my skills on which I have been working on for the past 2 years.</p>
+          </div>
           
-          <div className="space-y-8">
+          <div className="grid md:grid-cols-3 gap-6">
             {skillCategories.map((category, categoryIndex) => (
               <motion.div
                 key={category.title}
@@ -94,22 +96,22 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: categoryIndex * 0.2 }}
                 viewport={{ once: true }}
-                className="space-y-4"
+                className="bg-slate-800/30 rounded-2xl p-6 backdrop-blur-sm border border-slate-700/50"
               >
-                <h4 className="text-lg font-semibold text-blue-400 mb-4">{category.title}</h4>
-                <div className="flex flex-wrap gap-3">
+                <h4 className="text-xl font-semibold text-blue-400 mb-6 text-center">{category.title}</h4>
+                <div className="space-y-3">
                   {category.skills.map((skill, skillIndex) => (
-                    <motion.span
+                    <motion.div
                       key={skill}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
                       transition={{ delay: (categoryIndex * 0.2) + (skillIndex * 0.1) }}
                       viewport={{ once: true }}
-                      whileHover={{ scale: 1.05 }}
-                      className="px-4 py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-full text-blue-300 text-sm font-medium backdrop-blur-sm"
+                      whileHover={{ scale: 1.02 }}
+                      className="px-4 py-3 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-lg text-blue-300 text-sm font-medium backdrop-blur-sm text-center hover:border-blue-500/40 transition-all duration-300"
                     >
                       {skill}
-                    </motion.span>
+                    </motion.div>
                   ))}
                 </div>
               </motion.div>
