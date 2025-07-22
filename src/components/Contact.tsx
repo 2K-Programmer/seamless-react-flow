@@ -25,25 +25,33 @@ const Contact = () => {
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
   const { toast } = useToast();
 
-  // EmailJS configuration - You need to replace these with your actual EmailJS credentials
-  const EMAILJS_SERVICE_ID = 'your_service_id';
-  const EMAILJS_TEMPLATE_ID = 'your_template_id';
-  const EMAILJS_PUBLIC_KEY = 'your_public_key';
+  // EmailJS configuration
+  const EMAILJS_SERVICE_ID = 'service_83opo14';
+  const EMAILJS_TEMPLATE_ID = 'template_qcytgye';
+  const EMAILJS_PUBLIC_KEY = '3f41vUoiyNANnJwg8';
 
-  // Mock email database - Replace with actual API call
-  const registeredEmails = [
-    'john.doe@example.com',
-    'jane.smith@example.com',
-    'admin@company.com',
-    'test@example.com'
-  ];
+  // Mailbox Layer API configuration
+  const MAILBOXLAYER_API_KEY = 'e74a3ed0fc28c61925cbcb0e81b132e4';
 
   const checkEmailRegistration = async (email: string): Promise<boolean> => {
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 800));
-    
-    // In a real application, this would be an API call to your backend
-    return registeredEmails.includes(email.toLowerCase());
+    try {
+      const response = await fetch(
+        `https://apilayer.net/api/check?access_key=${MAILBOXLAYER_API_KEY}&email=${encodeURIComponent(email)}&smtp=1&format=1`
+      );
+      
+      if (!response.ok) {
+        throw new Error('Failed to validate email');
+      }
+      
+      const data = await response.json();
+      
+      // Check if email format is valid, domain exists, and SMTP is valid
+      return data.format_valid && data.mx_found && data.smtp_check;
+    } catch (error) {
+      console.error('Email validation error:', error);
+      // If API fails, allow submission but log the error
+      return true;
+    }
   };
 
   const validateForm = async (): Promise<boolean> => {
@@ -66,9 +74,9 @@ const Contact = () => {
       // Check if email is registered
       setIsCheckingEmail(true);
       try {
-        const isRegistered = await checkEmailRegistration(formData.email);
-        if (!isRegistered) {
-          newErrors.emailRegistration = 'This email is not registered in our system';
+        const isValid = await checkEmailRegistration(formData.email);
+        if (!isValid) {
+          newErrors.emailRegistration = 'Please enter a valid email address with an existing domain';
         }
       } catch (error) {
         newErrors.emailRegistration = 'Unable to verify email registration';
