@@ -1,7 +1,8 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { Toaster } from '@/components/ui/toaster';
 import Navigation from './Navigation';
 import Hero from './Hero';
 import About from './About';
@@ -34,6 +35,7 @@ const Portfolio = () => {
       <Certifications />
       <Contact />
       <Footer />
+      <Toaster />
     </div>
   );
 };

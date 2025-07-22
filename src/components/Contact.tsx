@@ -3,12 +3,14 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Phone, Send, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import emailjs from '@emailjs/browser';
 
 interface FormErrors {
   name?: string;
   email?: string;
   subject?: string;
   message?: string;
+  emailRegistration?: string;
 }
 
 const Contact = () => {
@@ -20,9 +22,31 @@ const Contact = () => {
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCheckingEmail, setIsCheckingEmail] = useState(false);
   const { toast } = useToast();
 
-  const validateForm = (): boolean => {
+  // EmailJS configuration - You need to replace these with your actual EmailJS credentials
+  const EMAILJS_SERVICE_ID = 'your_service_id';
+  const EMAILJS_TEMPLATE_ID = 'your_template_id';
+  const EMAILJS_PUBLIC_KEY = 'your_public_key';
+
+  // Mock email database - Replace with actual API call
+  const registeredEmails = [
+    'john.doe@example.com',
+    'jane.smith@example.com',
+    'admin@company.com',
+    'test@example.com'
+  ];
+
+  const checkEmailRegistration = async (email: string): Promise<boolean> => {
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    // In a real application, this would be an API call to your backend
+    return registeredEmails.includes(email.toLowerCase());
+  };
+
+  const validateForm = async (): Promise<boolean> => {
     const newErrors: FormErrors = {};
 
     // Name validation
@@ -38,6 +62,19 @@ const Contact = () => {
       newErrors.email = 'Email is required';
     } else if (!emailRegex.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
+    } else {
+      // Check if email is registered
+      setIsCheckingEmail(true);
+      try {
+        const isRegistered = await checkEmailRegistration(formData.email);
+        if (!isRegistered) {
+          newErrors.emailRegistration = 'This email is not registered in our system';
+        }
+      } catch (error) {
+        newErrors.emailRegistration = 'Unable to verify email registration';
+      } finally {
+        setIsCheckingEmail(false);
+      }
     }
 
     // Subject validation
@@ -61,7 +98,8 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) {
+    const isValid = await validateForm();
+    if (!isValid) {
       toast({
         title: "Validation Error",
         description: "Please fix the errors before submitting.",
@@ -72,17 +110,40 @@ const Contact = () => {
 
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      // Send email using EmailJS
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        to_name: 'Your Name', // Replace with your name
+      };
 
-    toast({
-      title: "Message sent successfully!",
-      description: "I'll get back to you as soon as possible.",
-    });
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      );
 
-    setFormData({ name: '', email: '', subject: '', message: '' });
-    setErrors({});
-    setIsSubmitting(false);
+      toast({
+        title: "Message sent successfully!",
+        description: "Thank you for your message. I'll get back to you as soon as possible.",
+      });
+
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      setErrors({});
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      toast({
+        title: "Failed to send message",
+        description: "There was an error sending your message. Please try again later.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -212,19 +273,26 @@ const Contact = () => {
                   <label htmlFor="email" className="block text-sm font-medium text-slate-400 mb-2">
                     Email *
                   </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className={`w-full px-4 py-3 bg-slate-700/50 border rounded-lg text-white placeholder-slate-400 focus:outline-none transition-colors ${
-                      errors.email 
-                        ? 'border-red-500 focus:border-red-400' 
-                        : 'border-slate-600 focus:border-blue-500'
-                    }`}
-                    placeholder="your.email@example.com"
-                  />
+                  <div className="relative">
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className={`w-full px-4 py-3 bg-slate-700/50 border rounded-lg text-white placeholder-slate-400 focus:outline-none transition-colors ${
+                        errors.email || errors.emailRegistration
+                          ? 'border-red-500 focus:border-red-400' 
+                          : 'border-slate-600 focus:border-blue-500'
+                      }`}
+                      placeholder="your.email@example.com"
+                    />
+                    {isCheckingEmail && (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <div className="w-5 h-5 border-2 border-blue-400/30 border-t-blue-400 rounded-full animate-spin"></div>
+                      </div>
+                    )}
+                  </div>
                   {errors.email && (
                     <motion.div
                       initial={{ opacity: 0, y: -10 }}
@@ -233,6 +301,16 @@ const Contact = () => {
                     >
                       <AlertCircle size={16} />
                       {errors.email}
+                    </motion.div>
+                  )}
+                  {errors.emailRegistration && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex items-center gap-2 mt-2 text-red-400 text-sm"
+                    >
+                      <AlertCircle size={16} />
+                      {errors.emailRegistration}
                     </motion.div>
                   )}
                 </div>
